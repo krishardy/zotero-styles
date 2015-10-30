@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only" default-locale="en-US">
   <info>
     <title>Society for American Archaeology</title>
@@ -15,7 +15,7 @@
     </contributor>
     <category citation-format="author-date"/>
     <category field="anthropology"/>
-    <updated>2015-01-01T23:37:43+00:00</updated>
+    <updated>2014-09-07T05:27:27+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale>
@@ -135,7 +135,7 @@
       <text variable="archive"/>
       <text variable="archive-place"/>
     </group>
-  </macro>
+	</macro>
   <macro name="access">
     <group delimiter=". ">
       <choose>
@@ -216,9 +216,9 @@
     <choose>
       <if type="article-newspaper">
         <group prefix=", " delimiter=", ">
-          <group delimiter=" ">
-            <text variable="edition"/>
-            <text term="edition"/>
+          <group>
+            <text variable="edition" suffix=" "/>
+            <text term="edition" prefix=" "/>
           </group>
           <group>
             <text term="section" form="short" suffix=" "/>
@@ -343,7 +343,107 @@
     <text macro="locators-article"/>
     <text macro="access" prefix=". "/>
   </macro>
-  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="false" collapse="year">
+
+  <macro name="chapter">
+    <!-- Issued -->
+    <text macro="date1" suffix="	"/>
+    <text variable="note" prefix="[" suffix="] "/>
+
+    <!-- Title -->
+    <text variable="title" font-style="italic" suffix=". "/>
+
+    <!-- Book title -->
+    <text term="in" text-case="capitalize-first" suffix=" "/>
+    <text variable="container-title" font-style="italic"/>
+    <text macro="container-contributors"/>
+
+    <!-- Secondary contributors and translators -->
+    <group delimiter=". ">
+      <names variable="editor">
+        <label form="verb-short" prefix=" " text-case="capitalize-first" suffix=" "/>
+        <name and="text" delimiter=", "/>
+      </names>
+      <choose>
+        <if variable="author editor" match="any">
+          <names variable="translator">
+            <label form="verb-short" prefix=" " text-case="capitalize-first" suffix=" "/>
+            <name and="text" delimiter=", "/>
+          </names>
+        </if>
+      </choose>
+    </group>
+
+    <!-- Volume and Page -->
+    <group prefix=", ">
+      <text variable="volume" suffix=":"/>
+      <text variable="page" prefix="pp. "/>
+    </group>
+
+    <!-- Edition -->
+    <choose>
+      <if is-numeric="edition">
+        <group delimiter=" ">
+          <number variable="edition" form="ordinal"/>
+          <text term="edition" form="short"/>
+        </group>
+      </if>
+      <else>
+        <text variable="edition" suffix="."/>
+      </else>
+    </choose>
+
+    <!-- Locators -->
+    <group prefix=". " delimiter=". ">
+      <group>
+        <text term="volume" form="short" text-case="capitalize-first" suffix=" "/>
+        <number variable="volume" form="numeric"/>
+      </group>
+      <group>
+        <number variable="number-of-volumes" form="numeric"/>
+        <text term="volume" form="short" prefix=" " plural="true"/>
+      </group>
+    </group>
+
+    <!-- Original publication date -->
+    <text variable="note" prefix=". Originally published " suffix=", "/>
+
+    <!-- Collection title -->
+    <text variable="collection-title"/>
+		<text variable="collection-number" prefix=" "/>
+
+    <!-- Issue -->
+    <group prefix=". " delimiter=", ">
+      <text macro="publisher"/>
+      <text macro="day-month"/>
+    </group>
+  </macro>
+
+  <macro name="book">
+    <choose>
+      <if variable="note">
+        <text macro="date1" suffix=" "/>
+        <text variable="note" prefix="[" suffix="]  "/>
+      </if>
+      <else>
+        <text macro="date1" suffix="  "/>
+      </else>
+    </choose>
+    <text macro="title"/>
+    <text macro="description"/>
+    <text macro="secondary-contributors" prefix=". "/>
+    <text macro="container-title" prefix=". "/>
+    <text macro="container-contributors"/>
+    <text macro="locators-chapter"/>
+    <text macro="edition" prefix=". "/>
+    <text macro="locators"/>
+    <text macro="collection-title" prefix=". "/>
+    <text macro="issue"/>
+    <text macro="locators-article"/>
+    <text macro="access" prefix=". "/>
+  </macro>
+
+
+  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="false">
     <layout prefix="(" suffix=")" delimiter="; ">
       <group delimiter=":">
         <group delimiter=" ">
@@ -354,7 +454,7 @@
       </group>
     </layout>
   </citation>
-  <bibliography hanging-indent="false" entry-spacing="0" subsequent-author-substitute="">
+  <bibliography hanging-indent="true" entry-spacing="0">
     <sort>
       <key macro="contributors"/>
       <key variable="issued"/>
@@ -364,8 +464,19 @@
         <text macro="contributors"/>
       </group>
       <group display="indent">
-        <text macro="date1" suffix="  "/>
-        <text macro="rest-of-bib"/>
+        <!-- Define each bibliography type independently -->
+        <choose>
+          <if type="book">
+            <text macro="book"/>
+          </if>
+          <else-if type="chapter">
+            <text macro="chapter"/>
+          </else-if>
+          <else>
+            <text macro="date1" suffix="  "/>
+            <text macro="rest-of-bib"/>
+          </else>
+        </choose>
       </group>
     </layout>
   </bibliography>
