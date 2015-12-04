@@ -1,0 +1,151 @@
+24a25,27
+>       <term name="editor" form="verb-by">edited by</term>
+>       <term name="translator" form="verb-by">translated by</term>
+>       <term name="collection-editor" form="verb-general-editor">general editor</term>
+38c41
+<                 <label form="verb-short" prefix=" " text-case="capitalize-first" suffix=" "/>
+---
+>                 <label form="verb-by" prefix=" " text-case="capitalize-first" suffix=" "/>
+52c55
+<             <label form="verb" prefix=" " suffix=" "/>
+---
+>             <label form="verb-by" prefix=" " suffix=" "/>
+58c61
+<                 <label form="verb" prefix=" " suffix=" "/>
+---
+>                 <label form="verb-by" prefix=" " suffix=" "/>
+160c163
+<       <else-if type="bill book graphic legal_case motion_picture report song" match="any">
+---
+>       <else-if type="bill book graphic legal_case motion_picture song thesis" match="any">
+205c208,217
+<   <macro name="locators-chapter">
+---
+>   <macro name="volume-chapter">
+>     <choose>
+>       <if type="chapter paper-conference" match="any">
+>         <group prefix=", ">
+>           <text variable="volume" />
+>         </group>
+>       </if>
+>     </choose>
+>   </macro>
+>   <macro name="page-chapter">
+209d220
+<           <text variable="volume" suffix=":"/>
+249c260
+<       <if type="chapter paper-conference" match="any">
+---
+>       <if type="chapter">
+253c264,271
+<     <text variable="container-title" font-style="italic"/>
+---
+>     <choose>
+>       <if type="paper-conference">
+>         <text variable="container-title"/>
+>       </if>
+>       <else>
+>         <text variable="container-title" font-style="italic"/>
+>       </else>
+>     </choose>
+283c301,311
+<     <text variable="collection-title"/>
+---
+>     <choose>
+>       <if type="report">
+>         <group delimiter=", ">
+>           <text variable="genre"/>
+>           <text variable="collection-title"/>
+>         </group>
+>       </if>
+>       <else>
+>         <text variable="collection-title"/>
+>       </else>
+>     </choose>
+299c327
+<       <else-if type="thesis"/>
+---
+>       <else-if type="thesis report" match="any"/>
+301c329
+<         <text variable="genre" prefix="Unpublished "/>
+---
+>         <text variable="genre"/>
+304a333,344
+>   <macro name="collection-editor">
+>     <choose>
+>       <if variable="collection-editor">
+>         <group delimiter=", ">
+>           <names variable="collection-editor">
+>             <name and="text" delimiter=", " />
+>             <label form="verb-general-editor" prefix=", " />
+>           </names>
+>         </group>
+>       </if>
+>     </choose>
+>   </macro>
+318a359,364
+>       <else-if type="report">
+>         <group prefix=", " delimiter=", ">
+>           <text macro="publisher"/>
+>           <text macro="day-month"/>
+>         </group>
+>       </else-if>
+323c369
+<               <text variable="genre" prefix="Unpublished "/>
+---
+>               <text variable="genre"/>
+335c381
+<     <text macro="secondary-contributors" prefix=". "/>
+---
+>     <text macro="secondary-contributors" prefix=". " />
+336a383
+>     <text macro="volume-chapter"/>
+338c385
+<     <text macro="locators-chapter"/>
+---
+>     <text macro="page-chapter"/>
+342,344c389,424
+<     <text macro="issue"/>
+<     <text macro="locators-article"/>
+<     <text macro="access" prefix=". "/>
+---
+>     <choose>
+>       <if type="report">
+>         <text macro="collection-editor" prefix=", "/>
+>         <text macro="locators-article"/>
+>         <group prefix=", " delimiter=", ">
+>           <group delimiter=", ">
+>             <text variable="publisher"/>
+>             <text variable="archive"/>
+>             <!--
+>             <text variable="archive_location" text-case="capitalize-first"/>
+>             <text variable="archive-place"/>
+>             -->
+>             <text variable="publisher-place"/>
+>           </group>
+>           <text macro="day-month"/>
+>         </group>
+>         <group prefix=". " delimiter=", ">
+>           <text variable="URL"/>
+>           <group delimiter=", " prefix="accessed ">
+>             <date variable="accessed">
+>               <date-part name="month"/>
+>               <date-part name="day" prefix=" "/>
+>             </date>
+>             <date variable="accessed">
+>               <date-part name="year"/>
+>             </date>
+>           </group>
+>         </group>
+>       </if>
+>       <else>
+>         <text macro="collection-editor" prefix=", "/>
+>         <text macro="issue"/>
+>         <text macro="locators-article"/>
+>         <text macro="access" prefix=". "/>
+>       </else>
+>     </choose>
+357c437
+<   <bibliography hanging-indent="false" entry-spacing="0" subsequent-author-substitute="">
+---
+>   <bibliography hanging-indent="true" entry-spacing="1" subsequent-author-substitute="">

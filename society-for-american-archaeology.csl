@@ -21,7 +21,7 @@
   <locale>
     <terms>
       <term name="editor" form="verb-short">ed.</term>
-      <term name="translator" form="verb-short">tr.</term>
+      <term name="translator" form="verb-short">trans.</term>
       <term name="editor" form="verb-by">edited by</term>
       <term name="translator" form="verb-by">translated by</term>
       <term name="collection-editor" form="verb-general-editor">general editor</term>
@@ -118,7 +118,7 @@
   </macro>
   <macro name="contributors-short">
     <names variable="author">
-      <name form="short" and="text" delimiter=", "/>
+      <name form="short" and="text" delimiter=", " initialize-with=". "/>
       <substitute>
         <names variable="editor"/>
         <names variable="translator"/>
@@ -160,7 +160,7 @@
           </if>
         </choose>
       </if>
-      <else-if type="bill book graphic legal_case motion_picture song thesis" match="any">
+      <else-if type="bill book graphic legal_case motion_picture song thesis report" match="any">
         <text variable="title" font-style="italic"/>
       </else-if>
       <else>
@@ -325,6 +325,23 @@
     <choose>
       <if variable="title" match="none"/>
       <else-if type="thesis report" match="any"/>
+      <else-if type="webpage">
+        <group delimiter=", " prefix=". ">
+          <text variable="genre" text-case="capitalize-first"/>
+          <text variable="URL"/>
+          <group prefix="accessed ">
+            <group delimiter=", ">
+              <date variable="accessed">
+                <date-part name="month"/>
+                <date-part name="day" prefix=" "/>
+              </date>
+              <date variable="accessed">
+                <date-part name="year"/>
+              </date>
+            </group>
+          </group>
+        </group>
+      </else-if>
       <else>
         <text variable="genre"/>
       </else>
@@ -423,7 +440,13 @@
       </else>
     </choose>
   </macro>
-  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="false" collapse="year">
+  <citation et-al-min="3"
+            et-al-use-first="1"
+            disambiguate-add-year-suffix="true"
+            disambiguate-add-names="true"
+            disambiguate-add-givenname="true"
+            collapse="year"
+            givenname-disambiguation-rule="primary-name">
     <layout prefix="(" suffix=")" delimiter="; ">
       <group delimiter=":">
         <group delimiter=" ">
@@ -434,16 +457,21 @@
       </group>
     </layout>
   </citation>
-  <bibliography hanging-indent="true" entry-spacing="1" subsequent-author-substitute="">
+  <bibliography entry-spacing="0"
+                line-spacing="1"
+                subsequent-author-substitute=""
+                subsequent-author-substitute-rule="complete-all"
+                hanging-indent="true"
+  >
     <sort>
       <key macro="contributors"/>
       <key variable="issued"/>
     </sort>
     <layout suffix=".">
-      <group display="block">
+      <group>
         <text macro="contributors"/>
       </group>
-      <group display="indent">
+      <group display="block">
         <text macro="date1" suffix="  "/>
         <text macro="rest-of-bib"/>
       </group>
